@@ -10,11 +10,8 @@ Urban waste problems often go unreported or unnoticed.
 CleanWatch AI allows citizens to report waste by uploading a photo. The system uses AI to analyze the image and determine:
 
 Waste type
-
 Severity level
-
 Description of the problem
-
 Recommended cleanup action
 
 This information is then stored and displayed on an interactive map showing garbage hotspots.
@@ -22,9 +19,7 @@ This information is then stored and displayed on an interactive map showing garb
 🧠 AI Capabilities
 
 AI analysis is performed using:
-
 Amazon Bedrock
-
 Amazon Nova 2 Lite
 
 The AI returns structured results like:
@@ -35,6 +30,7 @@ The AI returns structured results like:
  "description": "Large garbage accumulation near roadside",
  "recommended_action": "Municipal cleanup team required within 24 hours"
 }
+
 🏗 System Architecture
 
 Architecture uses a serverless design built on AWS.
@@ -46,6 +42,7 @@ Flow
 3️⃣ AI analyzes waste image
 4️⃣ Results stored in database
 5️⃣ Map shows garbage hotspots
+
 
 ☁️ AWS Services Used
 
