@@ -1,55 +1,177 @@
-# CleanWatch AI ♻️
+🌍 CleanWatch AI
 
-AI-powered Waste Monitoring System built using Amazon Nova 2 Lite and AWS Serverless Architecture.
- 
-## Problem
-Urban areas suffer from unreported garbage accumulation leading to health risks.
+AI-Powered Waste Monitoring System for Smart Cities ♻️
 
-## Solution
-CleanWatch AI allows citizens to report waste using a photo.  
-AI analyzes the image and identifies severity and waste type.
+Detects garbage using AI and visualizes waste hotspots on a map to help municipalities respond faster.
 
-## Features
+🚀 Project Overview
 
-• AI waste detection  
-• Severity classification  
-• Garbage hotspot map  
-• Complaint history  
-• Heatmap visualization  
+Urban waste problems often go unreported or unnoticed.
+CleanWatch AI allows citizens to report waste by uploading a photo. The system uses AI to analyze the image and determine:
 
-## Tech Stack
+Waste type
 
-Frontend:
-- React
-- Leaflet Maps
+Severity level
 
-Backend:
-- AWS Lambda
-- Amazon API Gateway
+Description of the problem
 
-AI:
-- Amazon Bedrock
-- Nova 2 Lite model
+Recommended cleanup action
 
-Storage:
-- Amazon S3
-- DynamoDB
+This information is then stored and displayed on an interactive map showing garbage hotspots.
 
-## Architecture
+🧠 AI Capabilities
 
-User → CloudFront → API Gateway → Lambda → Bedrock Nova 2 Lite model → DynamoDB + S3
+AI analysis is performed using:
 
-## AI Output
+Amazon Bedrock
 
-The system detects:
+Amazon Nova 2 Lite
 
-- Waste Type
-- Severity
-- Description
-- Recommended Cleanup Action
+The AI returns structured results like:
 
-## Future Improvements
+{
+ "severity": "high",
+ "waste_type": ["plastic","mixed"],
+ "description": "Large garbage accumulation near roadside",
+ "recommended_action": "Municipal cleanup team required within 24 hours"
+}
+🏗 System Architecture
 
-- Municipal dashboard
-- Auto cleanup scheduling
-- Drone waste monitoring
+Architecture uses a serverless design built on AWS.
+
+Flow
+
+1️⃣ User uploads waste photo
+2️⃣ API receives complaint
+3️⃣ AI analyzes waste image
+4️⃣ Results stored in database
+5️⃣ Map shows garbage hotspots
+
+☁️ AWS Services Used
+
+Frontend Hosting
+
+Amazon S3
+
+Content Delivery
+
+Amazon CloudFront
+
+API Layer
+
+Amazon API Gateway
+
+Serverless Compute
+
+AWS Lambda
+
+AI Processing
+
+Amazon Bedrock
+
+Database
+
+Amazon DynamoDB
+
+Image Storage
+
+Amazon S3
+
+🖥 Tech Stack
+Frontend
+
+React
+
+Leaflet Maps
+
+Heatmap Visualization
+
+Backend
+
+Python Lambda API
+
+Cloud Infrastructure
+
+AWS Serverless Architecture
+
+📊 Key Features
+
+✔ AI garbage detection
+✔ Waste severity classification
+✔ Garbage hotspot ranking
+✔ Heatmap visualization
+✔ Complaint history tracking
+✔ Location detection (GPS)
+
+📍 Example Output
+Field	Description
+Severity	High / Moderate / Low
+Waste Type	Plastic, Organic, Mixed
+Description	AI explanation of waste
+Recommended Action	Cleanup suggestion
+📂 Project Structure
+cleanwatch-ai
+│
+├── frontend
+│   ├── public
+│   ├── src
+│   │   ├── App.js
+│   │   ├── Login.js
+│   │   └── index.js
+│
+├── backend
+│   └── lambda_function.py
+│
+├── architecture
+│   └── system_architecture.png
+│
+├── README.md
+└── .gitignore
+📸 Application Features
+Waste Reporting
+
+Users capture garbage images directly from their camera.
+
+AI Waste Detection
+
+AI automatically identifies waste type and severity.
+
+Complaint Map
+
+All complaints displayed on a geographic map.
+
+Garbage Hotspots
+
+Areas with repeated complaints ranked automatically.
+
+🔮 Future Enhancements
+
+Municipal dashboard
+
+Automated cleanup alerts
+
+AI waste classification model
+
+Drone waste monitoring
+
+Predictive garbage hotspot detection
+
+🤝 Contribution
+
+Contributions are welcome!
+
+Fork the repository
+
+Create a feature branch
+
+Submit a Pull Request
+
+⭐ Support
+
+If you like this project, please give it a ⭐ on GitHub.
+
+👨‍💻 Author
+
+Developed by Jayesh Sonawane
+
+AI + AWS Serverless Project
