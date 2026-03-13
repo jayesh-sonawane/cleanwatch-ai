@@ -26,9 +26,13 @@ The AI returns structured results like:
 
 {
  "severity": "high",
+ 
  "waste_type": ["plastic","mixed"],
+ 
  "description": "Large garbage accumulation near roadside",
+ 
  "recommended_action": "Municipal cleanup team required within 24 hours"
+ 
 }
 
 🏗 System Architecture
