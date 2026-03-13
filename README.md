@@ -38,24 +38,24 @@ Architecture uses a serverless design built on AWS.
 Flow
 
 1️⃣ User uploads waste photo
+
 2️⃣ API receives complaint
+
 3️⃣ AI analyzes waste image
+
 4️⃣ Results stored in database
+
 5️⃣ Map shows garbage hotspots
+
 
 
 ☁️ AWS Services Used
 
 Frontend Hosting
-
 Amazon S3
-
 Content Delivery
-
 Amazon CloudFront
-
 API Layer
-
 Amazon API Gateway
 
 Serverless Compute
@@ -94,18 +94,26 @@ AWS Serverless Architecture
 📊 Key Features
 
 ✔ AI garbage detection
+
 ✔ Waste severity classification
+
 ✔ Garbage hotspot ranking
+
 ✔ Heatmap visualization
+
 ✔ Complaint history tracking
+
 ✔ Location detection (GPS)
 
 📍 Example Output
+
 Field	Description
 Severity	High / Moderate / Low
 Waste Type	Plastic, Organic, Mixed
 Description	AI explanation of waste
 Recommended Action	Cleanup suggestion
+
+
 📂 Project Structure
 cleanwatch-ai
 │
@@ -124,6 +132,8 @@ cleanwatch-ai
 │
 ├── README.md
 └── .gitignore
+
+
 📸 Application Features
 Waste Reporting
 
