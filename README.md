@@ -1,4 +1,5 @@
 AWS | React | AI | Serverless | Smart City
+
 🌍 CleanWatch AI
 
 AI-Powered Waste Monitoring System for Smart Cities ♻️
