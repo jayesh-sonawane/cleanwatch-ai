@@ -1,4 +1,4 @@
-AWS | React | AI | Serverless | Smart City
+#AmazonNova | AWS | React | AI | Serverless | Smart City
 
 🌍 CleanWatch AI
 
@@ -114,14 +114,21 @@ AWS Serverless Architecture
 📍 Example Output
 
 Field	Description
+
 Severity	High / Moderate / Low
+
 Waste Type	Plastic, Organic, Mixed
+
 Description	AI explanation of waste
+
 Recommended Action	Cleanup suggestion
 
 
+
 📂 Project Structure
+
 cleanwatch-ai
+
 │
 ├── frontend
 
@@ -181,7 +188,9 @@ Drone waste monitoring
 Predictive garbage hotspot detection
 
 🤝 Web Application Details
+
 GitHub Repository
+
 https://github.com/jayesh-sonawane/cleanwatch-ai
 
 Live Application
@@ -197,4 +206,4 @@ If you like this project, please give it a ⭐ on GitHub.
 
 Developed by Jayesh Sonawane
 
-AI + AWS Serverless Project
+Power by #AmazonNova
