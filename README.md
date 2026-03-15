@@ -124,19 +124,30 @@ Recommended Action	Cleanup suggestion
 cleanwatch-ai
 │
 ├── frontend
+
 │   ├── public
+
 │   ├── src
+
 │   │   ├── App.js
+
 │   │   ├── Login.js
+
 │   │   └── index.js
+
 │
 ├── backend
+
 │   └── lambda_function.py
+
 │
 ├── architecture
+
 │   └── system_architecture.png
+
 │
 ├── README.md
+
 └── .gitignore
 
 
@@ -169,15 +180,14 @@ Drone waste monitoring
 
 Predictive garbage hotspot detection
 
-🤝 Contribution
+🤝 Web Application Details
+GitHub Repository
+https://github.com/jayesh-sonawane/cleanwatch-ai
 
-Contributions are welcome!
+Live Application
+https://d3o7zmc325a69i.cloudfront.net/
 
-Fork the repository
-
-Create a feature branch
-
-Submit a Pull Request
+(Login credentials UserName: test , Password: test)
 
 ⭐ Support
 
