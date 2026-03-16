@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet.heat";
@@ -27,17 +27,25 @@ L.Icon.Default.mergeOptions({
 
 function HeatmapLayer({ points }) {
 
-  const map = window.mapInstance;
+  const map = useMap();
 
-  if (!map || points.length === 0) return null;
+  useEffect(() => {
 
-  const heat = L.heatLayer(points, {
-    radius: 25,
-    blur: 15,
-    maxZoom: 10
-  });
+    if (!points || points.length === 0) return;
 
-  heat.addTo(map);
+    const heatLayer = L.heatLayer(points, {
+      radius: 30,
+      blur: 20,
+      maxZoom: 15
+    });
+
+    heatLayer.addTo(map);
+
+    return () => {
+      map.removeLayer(heatLayer);
+    };
+
+  }, [points, map]);
 
   return null;
 }
@@ -306,13 +314,15 @@ useEffect(() => {
     loadComplaints();
   }, []);
 
+
+  
 const heatPoints = complaints
   .filter(c => c.latitude && c.longitude)
   .map(c => [
     Number(c.latitude),
     Number(c.longitude),
     c.severity === "high" ? 1 :
-    c.severity === "moderate" ? 0.6 : 0.3
+    c.severity === "moderate" ? 0.7 : 0.4
   ]);
  
  // ===============================
@@ -334,20 +344,43 @@ complaints.forEach((c) => {
     hotspotCounts[key] = {
       lat: Number(c.latitude),
       lng: Number(c.longitude),
-      count: 0
+      count: 0,
+	  score: 0
     };
   }
 
   hotspotCounts[key].count++;
+  
+  const severityWeight =
+    c.severity === "high" ? 3 :
+    c.severity === "moderate" ? 2 : 1;
+
+  hotspotCounts[key].score += severityWeight;
 
 });
 
 const hotspotRanking = Object.values(hotspotCounts)
-  .sort((a, b) => b.count - a.count)
+  .sort((a, b) => b.score - a.score)
   .slice(0, 5);
   
   // =============================== name co ordinate
-  const getAreaName = async (lat, lon) => {
+
+const areaCache = {};
+
+const getAreaName = async (lat, lon) => {
+
+  const key = lat.toFixed(3) + "," + lon.toFixed(3);
+
+  // 1️⃣ Check cache first
+  if (areaCache[key]) {
+    return areaCache[key];
+  }
+
+  let area = null;
+
+  /* -----------------------
+     Try Nominatim first
+  ------------------------*/
 
   try {
 
@@ -357,18 +390,56 @@ const hotspotRanking = Object.values(hotspotCounts)
 
     const data = await response.json();
 
-    return data.address?.suburb ||
-           data.address?.neighbourhood ||
-           data.address?.city ||
-           data.display_name;
+    const addr = data.address || {};
+
+    area =
+      addr.suburb ||
+      addr.neighbourhood ||
+      addr.village ||
+      addr.town ||
+      addr.city ||
+      addr.county ||
+      null;
 
   } catch (err) {
+    console.log("Nominatim API failed");
+  }
 
-    return "Unknown Area";
+  /* -----------------------
+     Fallback BigDataCloud
+  ------------------------*/
+
+  if (!area) {
+
+    try {
+
+      const response = await fetch(
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
+      );
+
+      const data = await response.json();
+
+      area =
+        data.locality ||
+        data.city ||
+        data.principalSubdivision ||
+        "Unknown Area";
+
+    } catch (err) {
+
+      area = "Unknown Area";
+
+    }
 
   }
 
+  // 3️⃣ Save in cache
+  areaCache[key] = area;
+
+  return area;
+
 };
+
 
 if (!loggedIn) {
   return <Login onLogin={setLoggedIn} />;
@@ -561,7 +632,7 @@ if (!loggedIn) {
             center={[20.5937, 78.9629]}
             zoom={5}
             style={{ height: 400 }}
-			whenCreated={(map) => (window.mapInstance = map)}
+			
           >
 
             <TileLayer
@@ -571,6 +642,38 @@ if (!loggedIn) {
 			{heatPoints.length > 0 && (
 			  <HeatmapLayer points={heatPoints} />
 			)}
+			{hotspotRanking.map((spot, i) => {
+
+  let color = "green";
+  let radius = 200;
+
+  if (spot.count >= 5) {
+    color = "red";
+    radius = 500;
+  } else if (spot.count >= 3) {
+    color = "orange";
+    radius = 350;
+  }
+
+  return (
+    <Circle
+      key={"hotspot-" + i}
+      center={[spot.lat, spot.lng]}
+      radius={radius}
+      pathOptions={{
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.4
+      }}
+    >
+      <Popup>
+        <b>Garbage Hotspot</b><br/>
+        Complaints: {spot.count}
+      </Popup>
+    </Circle>
+  );
+})}
+
             {complaints.map((item, i) =>
               item.latitude && item.longitude ? (
 
@@ -601,29 +704,42 @@ if (!loggedIn) {
 
 {hotspotRanking.map((spot, i) => {
 
-  const key =
-    spot.lat.toFixed(3) + "," + spot.lng.toFixed(3);
+  const key = spot.lat.toFixed(3) + "," + spot.lng.toFixed(3);
+
+  let color = "#4caf50";
+
+  if (spot.score >= 10) color = "#e53935";
+  else if (spot.score >= 6) color = "#fb8c00";
 
   return (
     <div
       key={i}
       style={{
-        border: "1px solid #ddd",
-        padding: "10px",
-        marginBottom: "10px",
-        borderRadius: "8px"
+        borderLeft: `6px solid ${color}`,
+        background: "#fafafa",
+        padding: "12px",
+        marginBottom: "12px",
+        borderRadius: "8px",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
       }}
     >
 
-      <b>#{i + 1}</b> {areaNames[key] || "Loading area..."}  {spot.lat} , {spot.lng};
+      <b>#{i + 1}</b> {areaNames[key] || "Loading area..."}
 
       <br />
 
-      Complaints: {spot.count}
+      📍 {spot.lat.toFixed(4)}, {spot.lng.toFixed(4)}
+
+      <br />
+
+      🧾 Complaints: {spot.count}
+
+      <br />
+
+      ⚠️ Impact Score: {spot.score}
 
     </div>
   );
-
 })}
 
       {/* Complaint History */}
